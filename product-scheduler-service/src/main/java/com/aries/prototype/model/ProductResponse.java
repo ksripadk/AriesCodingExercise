@@ -2,8 +2,13 @@ package com.aries.prototype.model;
 
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Component
-public class ProductResponse {
+public class ProductResponse implements Comparable<ProductResponse> {
+
     private String customerId;
     private String productName;
     private String domain;
@@ -49,5 +54,20 @@ public class ProductResponse {
 
     public void setEmailDate(String emailDate) {
         this.emailDate = emailDate;
+    }
+
+    @Override
+    public int compareTo(ProductResponse productResponse) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date start,end;
+        int result=0;
+        try {
+            start = sdf.parse(getEmailDate());
+            end = sdf.parse(productResponse.getEmailDate());
+            result = start.compareTo(end);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
