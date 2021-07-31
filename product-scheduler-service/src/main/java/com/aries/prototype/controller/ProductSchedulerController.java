@@ -50,8 +50,25 @@ public class ProductSchedulerController {
     }
 
     @DeleteMapping("/removeProduct")
-    public String removeProduct(@RequestParam(name = "id") String custId, @RequestParam(name = "product") String prodName, @RequestParam String domain)
+    public ResponseEntity<String> removeProduct(@RequestParam(name = "id") String custId, @RequestParam(name = "product") String prodName, @RequestParam String domain)
     {
-        return "Successfully Removed!";
+        String response = null;
+        if(productList != null && productList.getProductsList() != null)
+        {
+            for (Product product: productList.getProductsList())
+            {
+                if(product.getCustomerId() != null &&product.getCustomerId().equals(custId) &&
+                        product.getProductName().equals(prodName) && product.getDomain().equals(domain))
+                {
+                    productList.getProductsList().remove(product);
+                    response = "Removed The Product Successfully!";
+                    break;
+                }
+            }
+        }
+        if(response == null)
+            return new ResponseEntity<String>("Product not found to remove!",HttpStatus.OK);
+        else
+            return new ResponseEntity<String>(response,HttpStatus.OK);
     }
 }
