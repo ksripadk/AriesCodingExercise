@@ -3,6 +3,7 @@ package com.aries.prototype.controller;
 import com.aries.prototype.model.Product;
 import com.aries.prototype.model.ProductList;
 import com.aries.prototype.model.ProductRequest;
+import com.aries.prototype.model.ProductResponseList;
 import com.aries.prototype.service.ProductSchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,8 +42,11 @@ public class ProductSchedulerController {
     }
 
     @GetMapping("/getEmailScheduler")
-    public void getEmailScheduler()
+    public ResponseEntity<ProductResponseList> getEmailScheduler()
     {
+        ProductResponseList productResponseList = new ProductResponseList();
+        productResponseList.setProductResponseList(productSchedulerService.handleGetEmailScheduler(productList.getProductsList()));
+        return new ResponseEntity<ProductResponseList>(productResponseList,HttpStatus.OK);
     }
 
     @DeleteMapping("/removeProduct")
